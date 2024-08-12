@@ -1,2 +1,8 @@
-# myBlog
-This is a blog to store, share and engage articles written as I am inspired and as I meditate. It is built fully by me as a Full-Stack Project. Front-End is built with React while Back-End is built with PHP
+# React + Vite
+
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
