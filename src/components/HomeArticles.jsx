@@ -33,7 +33,7 @@ export default function HomeArticles() {
         
         setArticles({
           'Philosophy and Psychology': mockArticles['Philosophy and Psychology'],
-          'Scripture Thoughts': scriptureWithIds,
+          'Scripture Thoughts': mockArticles['Scripture Thoughts'].concat(scriptureWithIds),
           'Ideologies and Changes': mockArticles['Ideologies and Changes'],
           'Rants': mockArticles['Rants']
         });

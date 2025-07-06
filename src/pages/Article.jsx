@@ -1,71 +1,10 @@
 
-// export function SingleArticle({ article, category, onBack }) {
-//   if (!article) return null;
-  
-//   const categoryInfo = categoryData[category] || categoryData['Scripture Thoughts'];
-  
-//   return (
-//     <div className="min-h-screen bg-gray-50">
-//       <div className="max-w-4xl mx-auto px-6 py-12">
-//         <button 
-//           onClick={onBack}
-//           className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-8 transition-colors"
-//         >
-//           <ChevronLeft size={20} />
-//           Back to articles
-//         </button>
-        
-//         <article className="bg-white rounded-3xl shadow-lg overflow-hidden">
-//           <div className={`h-64 bg-gradient-to-br ${categoryInfo.color} flex items-center justify-center relative`}>
-//             <span className="text-8xl opacity-30">{categoryInfo.icon}</span>
-//             <div className="absolute bottom-6 left-6">
-//               <span className={`${categoryInfo.bgColor} ${categoryInfo.textColor} px-4 py-2 rounded-full font-medium`}>
-//                 {category}
-//               </span>
-//             </div>
-//           </div>
-          
-//           <div className="p-8 lg:p-12">
-//             <div className="flex items-center gap-4 text-gray-500 mb-6">
-//               <div className="flex items-center gap-2">
-//                 <Calendar size={18} />
-//                 <span>{article.date || 'August 11th, 2024'}</span>
-//               </div>
-//               <div className="flex items-center gap-2">
-//                 <Clock size={18} />
-//                 <span>5 min read</span>
-//               </div>
-//             </div>
-            
-//             <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-8 leading-tight">
-//               {article.title || `${article.reference}: Verse ${article.verse}`}
-//             </h1>
-            
-//             <div className="prose prose-lg max-w-none">
-//               <p className="text-xl text-gray-700 leading-relaxed mb-8">
-//                 {article.text || article.content}
-//               </p>
-              
-//               <div className="bg-gray-50 p-6 rounded-2xl border-l-4 border-gray-900">
-//                 <p className="text-gray-600 italic">
-//                   "This is a moment of reflection, a pause in the journey to consider 
-//                   the deeper meanings and connections that shape our understanding."
-//                 </p>
-//               </div>
-//             </div>
-//           </div>
-//         </article>
-//       </div>
-//     </div>
-//   );
-// }
-
 // pages/Article.jsx
 import { useParams, useNavigate } from 'react-router-dom';
 import { ChevronLeft, Calendar, Clock, Share2, Bookmark, Heart } from 'lucide-react';
 import { fullArticles } from '../components/mockarticle';
 import { categoryData } from "../components/ArticleCards";
-
+import toast from 'react-hot-toast';
 
 export default function Article() {
   const { id } = useParams();
@@ -73,6 +12,7 @@ export default function Article() {
   
   // Get article from fullArticles
   const article = fullArticles[id];
+  const relatedArticle = fullArticles[article?.relatedId];
   
   if (!article) {
     return (
@@ -92,7 +32,7 @@ export default function Article() {
   }
   
   const categoryInfo = categoryData[article.category] || categoryData['Scripture Thoughts'];
-  
+    const relatedCategoryInfo = categoryData[relatedArticle?.category] || categoryData['Scripture Thoughts'];
   const handleShare = async () => {
     if (navigator.share) {
       try {
@@ -107,7 +47,7 @@ export default function Article() {
     } else {
       // Fallback: copy to clipboard
       navigator.clipboard.writeText(window.location.href);
-      alert('Link copied to clipboard!');
+      toast('Link copied to clipboard!');
     }
   };
   
@@ -133,12 +73,12 @@ export default function Article() {
               >
                 <Share2 size={20} />
               </button>
-              <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-all">
+              {/* <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-all">
                 <Bookmark size={20} />
               </button>
               <button className="p-2 text-gray-500 hover:text-red-500 hover:bg-gray-100 rounded-full transition-all">
                 <Heart size={20} />
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
@@ -195,8 +135,8 @@ export default function Article() {
                 EA
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">Emmanuel Akinola</h3>
-                <p className="text-gray-600">Writer, Thinker, Father</p>
+                <h3 className="font-semibold text-gray-900">Emmanuel Akinola Tijesunimi</h3>
+                <p className="text-gray-600">Writer, Thinker</p>
               </div>
             </div>
             
@@ -218,9 +158,9 @@ export default function Article() {
                     >
                       Share
                     </button>
-                    <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-colors text-sm font-medium">
+                    {/* <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-colors text-sm font-medium">
                       Save
-                    </button>
+                    </button> */}
                   </div>
                 </div>
                 
@@ -237,12 +177,7 @@ export default function Article() {
         <div className="mt-16">
           <h2 className="text-3xl font-bold text-gray-900 mb-8">Continue Reading</h2>
           <div className="grid md:grid-cols-2 gap-6">
-            {Object.values(fullArticles)
-              .filter(relatedArticle => relatedArticle.id !== article.id)
-              .slice(0, 2)
-              .map((relatedArticle) => {
-                const relatedCategoryInfo = categoryData[relatedArticle.category] || categoryData['Scripture Thoughts'];
-                return (
+            {relatedArticle ? (
                   <div 
                     key={relatedArticle.id}
                     onClick={() => navigate(`/${relatedArticle.id}`)}
@@ -272,8 +207,11 @@ export default function Article() {
                       </div>
                     </div>
                   </div>
-                );
-              })
+                ) : (
+              <div className="text-gray-500 text-center col-span-2">
+                <p>No related articles available at the moment.</p>
+              </div>
+            )
             }
           </div>
         </div>

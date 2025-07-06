@@ -1,7 +1,7 @@
 export default function Newsletter() {
   return (
     <>
-        <div className="flex flex-col xl:flex-row items-start lg:items-center justify-between gap-5 bg-black rounded-lg p-5 md:p-10 my-5">
+        <div className="flex flex-col xl:flex-row items-start lg:items-center justify-between gap-10 bg-black rounded-lg p-5 md:p-10 my-10">
         <div className="text-white">
         <h1 className="font-bold text-3xl">Subscribe to my Newsletter.</h1>
         <p className="text-xl font-light">You can get my latest writings and thoughts delivered to your mailbox.</p>
